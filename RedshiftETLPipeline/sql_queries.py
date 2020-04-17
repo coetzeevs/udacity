@@ -1,12 +1,10 @@
 import configparser
 
-
 # CONFIG
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
 
 # DROP TABLES
-
 staging_events_table_drop = "DROP TABLE IF EXISTS staging_events CASCADE;"
 staging_songs_table_drop = "DROP TABLE IF EXISTS staging_songs CASCADE;"
 songplay_table_drop = "DROP TABLE IF EXISTS fact_songplays CASCADE;"
@@ -16,8 +14,7 @@ artist_table_drop = "DROP TABLE IF EXISTS dim_artists CASCADE;"
 time_table_drop = "DROP TABLE IF EXISTS dim_time CASCADE;"
 
 # CREATE TABLES
-
-staging_events_table_create= ("""
+staging_events_table_create = ("""
     CREATE TABLE IF NOT EXISTS
     staging_events
     (
@@ -133,7 +130,6 @@ time_table_create = ("""
 """)
 
 # STAGING TABLES
-
 staging_events_copy = ("""
     COPY staging_events
     FROM '{source}'
@@ -141,11 +137,11 @@ staging_events_copy = ("""
     FORMAT AS JSON '{json_path}'
     REGION '{region}';
 """).format(
-        source=config.get('S3', 'LOG_DATA'), 
-        role_arn=config.get('IAM_ROLE', 'ARN'), 
-        json_path=config.get('S3', 'LOG_JSONPATH'), 
-        region=config.get('AWS', 'REGION')
-    )
+    source=config.get('S3', 'LOG_DATA'),
+    role_arn=config.get('IAM_ROLE', 'ARN'),
+    json_path=config.get('S3', 'LOG_JSONPATH'),
+    region=config.get('AWS', 'REGION')
+)
 
 staging_songs_copy = ("""
     COPY staging_songs
@@ -154,13 +150,12 @@ staging_songs_copy = ("""
     REGION '{region}'
     JSON 'auto';
 """).format(
-        source=config.get('S3', 'SONG_DATA'), 
-        role_arn=config.get('IAM_ROLE', 'ARN'),
-        region=config.get('AWS', 'REGION')
-    )
+    source=config.get('S3', 'SONG_DATA'),
+    role_arn=config.get('IAM_ROLE', 'ARN'),
+    region=config.get('AWS', 'REGION')
+)
 
 # FINAL TABLES
-
 songplay_table_insert = (
     """
     INSERT INTO fact_songplays (
@@ -288,7 +283,32 @@ time_table_insert = (
 
 # QUERY LISTS
 
-create_table_queries = [staging_events_table_create, staging_songs_table_create, songplay_table_create, user_table_create, song_table_create, artist_table_create, time_table_create]
-drop_table_queries = [staging_events_table_drop, staging_songs_table_drop, songplay_table_drop, user_table_drop, song_table_drop, artist_table_drop, time_table_drop]
-copy_table_queries = [staging_events_copy, staging_songs_copy]
-insert_table_queries = [songplay_table_insert, user_table_insert, song_table_insert, artist_table_insert, time_table_insert]
+create_table_queries = [
+    staging_events_table_create,
+    staging_songs_table_create,
+    songplay_table_create,
+    user_table_create,
+    song_table_create,
+    artist_table_create,
+    time_table_create
+]
+drop_table_queries = [
+    staging_events_table_drop,
+    staging_songs_table_drop,
+    songplay_table_drop,
+    user_table_drop,
+    song_table_drop,
+    artist_table_drop,
+    time_table_drop
+]
+copy_table_queries = [
+    staging_events_copy,
+    staging_songs_copy
+]
+insert_table_queries = [
+    songplay_table_insert,
+    user_table_insert,
+    song_table_insert,
+    artist_table_insert,
+    time_table_insert
+]
