@@ -36,7 +36,6 @@ code
 .vscode/
 Read the Docs
 config.rst
-*.ipynb
 *.log
 
 /.project
@@ -64,20 +63,4 @@ Temporary Items
 .apdisk
 
 # (Potentially) Very Large Files
-*.csv
-FilterBucket/cloud_sql_proxy
-SCV/ETL/Sailthru/all_users.csv
-
-IBT/untitled folder/
-replenishmentmodel/Availability_V1.csv
-replenishmentmodel/Availability_V1.csv.zip
-replenishmentmodel/clusters_shenine.csv
-recommendations/datafile.csv
-
 *.xlsx
-JiraAPI.ipynb
-env-datascincescript_pwbtabt
-
-# K8S configmaps and secrets
-!kubernetes/**/*.env
-!services/**/env/
