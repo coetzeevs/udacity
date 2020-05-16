@@ -21,50 +21,49 @@ The data lake consists of songplay data (acting as the fact table) and user, art
 
 ### Tables
 **songplays**
-- songplay_id INTEGER IDENTITY(0,1) PRIMARY KEY,
-- start_time TIMESTAMP NOT NULL,
-- user_id INTEGER NOT NULL,
-- level VARCHAR,
-- song_id VARCHAR,
-- artist_id VARCHAR,
-- session_id INTEGER NOT NULL DISTKEY,
-- location VARCHAR,
-- user_agent VARCHAR
+- songplay_id
+- start_time
+- user_id
+- level
+- song_id 
+- artist_id
+- session_id
+- location
+- user_agent
 
 #### Dimension Table(s)
 **users**
-- user_id INTEGER PRIMARY KEY DISTKEY,
-- first_name VARCHAR NOT NULL,
-- last_name VARCHAR NOT NULL,
-- gender VARCHAR NOT NULL,
-- level VARCHAR NOT NULL
+- user_id
+- first_name
+- last_name
+- gender
+- level
 _The collection of users listening on the platform_
 
 **songs**
-- song_id VARCHAR PRIMARY KEY DISTKEY,
-- title VARCHAR NOT NULL,
-- artist_id_fk VARCHAR NOT NULL,
-- year INTEGER SORTKEY,
-- duration REAL
+- song_id
+- title
+- artist_id_fk
+- year
+- duration
 _A collection of songs being listened to by users on the platform_
 
 **artists**
-- artist_id VARCHAR PRIMARY KEY DISTKEY,
-- name VARCHAR NOT NULL SORTKEY,
-- location VARCHAR,
-- latitude VARCHAR(30),
-- longitude VARCHAR(30)
+- artist_id
+- name
+- location
+- latitude
+- longitude
 _A collection of artists being listened to by users on the platform_
 
 **time**
-- id INTEGER IDENTITY(0,1) PRIMARY KEY,
-- start_time TIMESTAMP NOT NULL DISTKEY SORTKEY,
-- hour INTEGER NOT NULL,
-- day INTEGER NOT NULL,
-- week INTEGER NOT NULL,
-- month INTEGER NOT NULL,
-- year INTEGER NOT NULL,
-- weekday INTEGER NOT NULL
+- start_time
+- hour
+- day
+- week
+- month
+- year
+- weekday
 _A record of the time instances when users are listening to songs on the platform_
 
 ## File structure (project)
