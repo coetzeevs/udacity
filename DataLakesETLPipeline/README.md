@@ -78,7 +78,7 @@ The project contains the following components:
 
 ## Project instructions
 
-Clone this repo to your local file system. Add a configuration file called `dl.cfg` with the following structure:
+Clone this repo to your local file system. Edit the configuration file called `dl.cfg` with the following structure:
 
 ```
 [AWS]
