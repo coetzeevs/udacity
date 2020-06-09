@@ -33,3 +33,8 @@ For this project, there are two datasets. Here are the s3 links for each:
 
 - Log data: s3://udacity-dend/log_data
 - Song data: s3://udacity-dend/song_data
+
+### Reviewers note
+Ignore the content in the `resources` folder. All project-related files are contained in the following folders:
+- [dags]()
+- [plugins]()
