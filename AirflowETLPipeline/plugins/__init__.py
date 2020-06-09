@@ -5,15 +5,19 @@ from airflow.plugins_manager import AirflowPlugin
 import operators
 import helpers
 
-# Defining the plugin class
-class UdacityPlugin(AirflowPlugin):
-    name = "udacity_plugin"
+
+class CustomPlugin(AirflowPlugin):
+    """
+    Plugin class object to register custom plugins in Airflow environment
+    """
+    name = "custom_plugin"
     operators = [
-        operators.StageToRedshiftOperator,
-        operators.LoadFactOperator,
+        operators.DataQualityOperator,
         operators.LoadDimensionOperator,
-        operators.DataQualityOperator
+        operators.LoadFactOperator,
+        operators.StageToRedshiftOperator
     ]
     helpers = [
-        helpers.SqlQueries
+        helpers.CreateTablesSqlQueries,
+        helpers.InsertSqlQueries
     ]

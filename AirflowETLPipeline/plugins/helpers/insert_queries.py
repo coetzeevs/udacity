@@ -1,4 +1,7 @@
-class SqlQueries:
+class InsertSqlQueries:
+    """
+    Class object to handle data insert queries
+    """
     songplay_table_insert = ("""
         SELECT
                 md5(events.sessionid || events.start_time) songplay_id,

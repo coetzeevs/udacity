@@ -9,7 +9,7 @@ offered by Udacity.
 - [CassandraETLPipeline](https://github.com/coetzeevs/udacity/tree/master/CassandraETLPipeline) | Project 2
 - [RedshiftETLPipeline](https://github.com/coetzeevs/udacity/tree/master/RedshiftETLPipeline)  | Project 3
 - [DataLakesETLPipeline](https://github.com/coetzeevs/udacity/tree/master/DataLakesETLPipeline) | Project 4
-- [AirflowELTPipeline](https://github.com/coetzeevs/udacity/tree/master/AirflowETLPipeline)
+- [AirflowELTPipeline](https://github.com/coetzeevs/udacity/tree/master/AirflowETLPipeline) | Project 5
 
 Each of the project folders contains a README explaining the context and project files.
 
