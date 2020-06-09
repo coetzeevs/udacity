@@ -5,11 +5,11 @@ This repo contains project files produced as project deliverables during the com
 offered by Udacity.
 
 ## Contents
-[PostgresETLPipeline](https://github.com/coetzeevs/udacity/tree/master/PostgresETLPipeline)  | Project 1
-[CassandraETLPipeline](https://github.com/coetzeevs/udacity/tree/master/CassandraETLPipeline) | Project 2
-[RedshiftETLPipeline](https://github.com/coetzeevs/udacity/tree/master/RedshiftETLPipeline)  | Project 3
-[DataLakesETLPipeline](https://github.com/coetzeevs/udacity/tree/master/DataLakesETLPipeline) | Project 4
-[AirflowELTPipeline](https://github.com/coetzeevs/udacity/tree/master/AirflowETLPipeline)
+- [PostgresETLPipeline](https://github.com/coetzeevs/udacity/tree/master/PostgresETLPipeline)  | Project 1
+- [CassandraETLPipeline](https://github.com/coetzeevs/udacity/tree/master/CassandraETLPipeline) | Project 2
+- [RedshiftETLPipeline](https://github.com/coetzeevs/udacity/tree/master/RedshiftETLPipeline)  | Project 3
+- [DataLakesETLPipeline](https://github.com/coetzeevs/udacity/tree/master/DataLakesETLPipeline) | Project 4
+- [AirflowELTPipeline](https://github.com/coetzeevs/udacity/tree/master/AirflowETLPipeline)
 
 Each of the project folders contains a README explaining the context and project files.
 
