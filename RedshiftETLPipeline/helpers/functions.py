@@ -15,7 +15,7 @@ def pretty_redshift_props(props):
     if isinstance(props, tuple):
         return props[0], props[1]
     else:
-        pd.set_option('display.max_colwidth', -1)
+        pd.set_option('display.max_colwidth', None)
         keysToShow = ["ClusterIdentifier", "NodeType", "ClusterStatus", "MasterUsername", "DBName", "Endpoint",
                       "NumberOfNodes", 'VpcId']
         x = [(k, v) for k, v in props.items() if k in keysToShow]

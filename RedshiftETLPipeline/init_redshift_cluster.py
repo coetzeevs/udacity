@@ -3,7 +3,7 @@ import json
 
 import boto3
 
-from helpers import fetch_props, pretty_redshift_props
+from helpers.functions import fetch_props, pretty_redshift_props
 
 config = configparser.ConfigParser()
 config.read_file(open('dwh.cfg'))
