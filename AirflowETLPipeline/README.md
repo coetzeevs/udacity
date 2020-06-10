@@ -34,9 +34,35 @@ For this project, there are two datasets. Here are the s3 links for each:
 - Log data: s3://udacity-dend/log_data
 - Song data: s3://udacity-dend/song_data
 
+## Project file structure
+#### [dags](https://github.com/coetzeevs/udacity/tree/master/AirflowETLPipeline/dags)
+This contains a file called `sparkify_etl_dag.py` which is the definition file for each DAG task 
+and the logical ordering of each of the tasks.
+
+#### [plugins](https://github.com/coetzeevs/udacity/tree/master/AirflowETLPipeline/plugins)
+This contains two folders:
+1. [helpers](https://github.com/coetzeevs/udacity/tree/master/AirflowETLPipeline/plugins/helpers)
+It contains the SQL queries used during ETL execution
+1. [operators](https://github.com/coetzeevs/udacity/tree/master/AirflowETLPipeline/plugins/operators)
+It contains the custom operators used for executing the ETL pipeline
+
+## Configuration for running the pipeline
+The following is needed to run this in an Airflow environment:
+
+- A connection called `aws_credentials` in your Airflow environment. This should be 
+an `Amazon Web Services` connection type.
+- A connection called `redshift` in your Airflow environment. This should be a `Postgres` 
+connection type.  
+
 ## DAG
 The DAG for this pipeline looks as follows:
 ![Sparkify ETL DAG](https://github.com/coetzeevs/udacity/blob/master/AirflowETLPipeline/media/SparkifyDAG.png?raw=true)
+
+The process is to create all the different tables involved in the process, including the staging tables, load the staging data
+from the S3 JSON data source directories, load the data from the staging tables in the fact table, load the 
+dimension tables, and finally do quality checks on the resulting tables. 
+
+A note: these are not exhaustive quality checks and many more could be included.
 
 ### Udacity reviewer's note
 Ignore the content in the `resources` folder. All project-related files are contained in the following folders:
