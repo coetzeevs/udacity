@@ -59,11 +59,11 @@ class LoadDimensionOperator(BaseOperator):
                 WHERE {self.table}.{self.p_key} = sg_{self.table}.{self.p_key};
                 
                 INSERT INTO {self.table}
-                SELECT * FORM sg_{self.table};
+                SELECT * FROM sg_{self.table};
             """
         else:
             # Truncate destination table in preparation for clean data
-            hook.run(f"TRUNCATE TABLE ONLY {self.table};")
+            hook.run(f"TRUNCATE TABLE {self.table};")
 
             # set SQL query
             build_sql = f"""

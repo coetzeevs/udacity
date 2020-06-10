@@ -65,7 +65,7 @@ class StageToRedshiftOperator(BaseOperator):
         s3_path = "s3://{}/{}".format(self.s3_bucket, self.s3_key)
 
         # prepare destination table
-        redshift_hook.run(f"TRUNCATE TABLE ONLY {self.table};")
+        redshift_hook.run(f"TRUNCATE TABLE {self.table};")
 
         # Prep formatted SQL
         sql = StageToRedshiftOperator.copy_sql.format(
@@ -74,9 +74,7 @@ class StageToRedshiftOperator(BaseOperator):
             key_id=credentials.access_key,
             key=credentials.secret_key,
             region=self.region,
-            json_option=self.json_option,
-            ignore_header=self.ignore_headers,
-            delimiter=self.delimiter
+            json_option=self.json_option
         )
 
         # execute SQL to staging table

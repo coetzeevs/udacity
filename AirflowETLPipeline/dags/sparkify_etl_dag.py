@@ -212,6 +212,7 @@ stage_songs_to_redshift >> load_songplays_table
 
 # load dimension tables
 create_artists_task >> load_artist_dimension_table
+create_songplays_task >> load_songplays_table
 create_songs_task >> load_song_dimension_table
 create_time_task >> load_time_dimension_table
 create_users_task >> load_user_dimension_table

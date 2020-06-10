@@ -6,18 +6,16 @@ import operators
 import helpers
 
 
-class CustomPlugin(AirflowPlugin):
-    """
-    Plugin class object to register custom plugins in Airflow environment
-    """
-    name = "custom_plugin"
+# Defining the plugin class
+class UdacityPlugin(AirflowPlugin):
+    name = "udacity_plugin"
     operators = [
-        operators.DataQualityOperator,
-        operators.LoadDimensionOperator,
+        operators.StageToRedshiftOperator,
         operators.LoadFactOperator,
-        operators.StageToRedshiftOperator
+        operators.LoadDimensionOperator,
+        operators.DataQualityOperator
     ]
     helpers = [
-        helpers.CreateTablesSqlQueries,
-        helpers.InsertSqlQueries
+        helpers.InsertSqlQueries,
+        helpers.CreateTablesSqlQueries
     ]
