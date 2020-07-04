@@ -1,3 +1,4 @@
+import os
 import configparser
 
 from .functions import (
@@ -10,10 +11,10 @@ from .functions import (
 config = configparser.ConfigParser()
 config.read('dl.cfg')
 
-os.environ['REGION']=config['AWS']['REGION']
-os.environ['AWS_ACCESS_KEY_ID']=config['AWS']['ACCESS_KEY_ID']
-os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS']['SECRET_ACCESS_KEY']
-os.environ['BUCKET']=config['AWS']['BUCKET']
+os.environ['REGION'] = config['AWS']['REGION']
+os.environ['AWS_ACCESS_KEY_ID'] = config['AWS']['ACCESS_KEY_ID']
+os.environ['AWS_SECRET_ACCESS_KEY'] = config['AWS']['SECRET_ACCESS_KEY']
+os.environ['BUCKET'] = config['AWS']['BUCKET']
 
 
 def main():
