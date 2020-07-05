@@ -31,28 +31,30 @@ class DataClean(object):
         """
         df = self.data_dict.get('demographics', None)
         if df is not None:
-            data = df.groupBy(
-                col("City"),
-                col("State"),
-                col("Median Age"),
-                col("Male Population"),
-                col("Female Population"),
-                col("Total Population"),
-                col("Number of Veterans"),
-                col("Foreign-born"),
-                col("Average Household Size"),
-                col("State Code"))\
+            data = df \
+                .withColumn("count", col("Count").cast("integer")) \
+                .groupBy(
+                    col("City"),
+                    col("State"),
+                    col("Median Age"),
+                    col("Male Population"),
+                    col("Female Population"),
+                    col("Total Population"),
+                    col("Number of Veterans"),
+                    col("Foreign-born"),
+                    col("Average Household Size"),
+                    col("State Code"))\
                 .pivot("Race")\
                 .agg(sum("count").cast("integer"))\
                 .fillna(
-                {
-                    "American Indian and Alaska Native": 0,
-                    "Asian": 0,
-                    "Black or African-American": 0,
-                    "Hispanic or Latino": 0,
-                    "White": 0,
-                }
-            )
+                    {
+                        "American Indian and Alaska Native": 0,
+                        "Asian": 0,
+                        "Black or African-American": 0,
+                        "Hispanic or Latino": 0,
+                        "White": 0,
+                    }
+                )
 
             return dict(demographics=data)
         else:
