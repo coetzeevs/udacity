@@ -1,6 +1,6 @@
-import os
-import logging
 import configparser
+import logging
+import os
 
 from ops.storage import (
     create_spark_session,
@@ -9,9 +9,10 @@ from ops.storage import (
 
 from configs.sources import set_source_dict_cfg
 
-from ops.etl.source_ops import SourceOps, WarehouseOps
 from ops.data.data_cleaning import DataCleaningOps
 from ops.data.data_transformation import DataTransformationOps
+from ops.etl.source_ops import SourceOps
+from ops.etl.warehouse_ops import WarehouseOps
 
 config = configparser.ConfigParser()
 config.read_file(open(os.path.realpath('./configs/dwh.cfg')))
