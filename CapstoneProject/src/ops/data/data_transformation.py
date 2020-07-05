@@ -32,9 +32,9 @@ class DataTransformationOps(object):
                     col("state_code").alias("State_code"),
                     col("state")
                 ).agg(
-                    _sum("total_population"),
-                    _sum("male_population"),
-                    _sum("female_population"),
+                    _sum("total_population").alias("total_population"),
+                    _sum("male_population").alias("male_population"),
+                    _sum("female_population").alias("female_population"),
                     _sum("American Indian and Alaska Native").alias("american_indian_and_alaska_native"),
                     _sum("Asian").alias("asian"),
                     _sum("Black or African-American").alias("black_or_african_american"),
