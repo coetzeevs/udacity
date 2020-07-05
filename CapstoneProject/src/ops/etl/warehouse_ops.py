@@ -15,7 +15,7 @@ class WarehouseOps(object):
         Returns:
                 Parquet formatted dataset in S3 at `destination_storage/dimensions/dataset`
         """
-        for source_name, data in self.data_dict:
+        for source_name, data in self.data_dict.items():
             if source_name == 'immigration_data':
                 # as-is state backup
                 # store immigration data in current state, before being joined and partitioned to create facts
