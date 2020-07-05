@@ -13,44 +13,6 @@ class SourceOps(object):
     def __init__(self, spark, source_dict):
         self.spark = spark
         self.paths = source_dict
-
-    def _load_raw_file(self, path, file_format="csv", delimiter=",", header="true", schema=None):
-        """
-        Load raw CSV data into SparkDF
-        Args:
-            path: [str] - file path to CSV source file
-            delimiter: [str] - column delimiter separating data points
-
-        Returns:
-                Spark DataFrame
-        """
-        return self.spark.read.format(file_format) \
-            .option("header", header) \
-            .option("delimiter", delimiter) \
-            .option("schema", schema) \
-            .load(path)
-
-    def _load_raw_sas(self, path):
-        """
-        Load raw SAS data into SparkDF
-        Args:
-            path: [str] - file path to SAS part files
-
-        Returns:
-                Spark DataFrame
-        """
-        return self.spark.read.parquet(path)
-
-    def _load_raw_airlines_dat(self, path):
-        """
-        Special class method - load raw airlines data from .dat source file
-        Required: data structure specification for target file
-        Args:
-            path: [str] - file path to SAS part files
-
-        Returns:
-                Spark DataFrame
-        """
         self.airlines_schema = StructType(
             [
                 StructField(
@@ -95,7 +57,33 @@ class SourceOps(object):
                 )
             ]
         )
-        return self.spark.read.csv(path, header=False, schema=self.airlines_schema)
+
+    def _load_raw_file(self, path, file_format="csv", delimiter=",", header="true", schema=None):
+        """
+        Load raw CSV data into SparkDF
+        Args:
+            path: [str] - file path to CSV source file
+            delimiter: [str] - column delimiter separating data points
+
+        Returns:
+                Spark DataFrame
+        """
+        return self.spark.read.format(file_format) \
+            .option("header", header) \
+            .option("delimiter", delimiter) \
+            .schema(schema) \
+            .load(path)
+
+    def _load_raw_sas(self, path):
+        """
+        Load raw SAS data into SparkDF
+        Args:
+            path: [str] - file path to SAS part files
+
+        Returns:
+                Spark DataFrame
+        """
+        return self.spark.read.parquet(path)
 
     def load(self, source_dict):
         """
@@ -123,15 +111,12 @@ class SourceOps(object):
                     if single_entity:
                         ret_dict[source_name] = self._load_raw_sas(path=folder_path)
                     else:
-                        if source_name == 'airlines':
-                            ret_dict[source_name] = self._load_raw_airlines_dat(
-                                path=folder_path + f'/{file_name}'
-                            )
                         ret_dict[source_name] = self._load_raw_file(
                             path=folder_path + f'/{file_name}',
                             file_format=file_format,
                             delimiter=delimiter,
-                            header=header
+                            header=header,
+                            schema=self.airlines_schema if source_name == 'airlines' else None
                         )
                 except Exception as e:
                     logging.error(e)
