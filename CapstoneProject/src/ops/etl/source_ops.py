@@ -58,7 +58,7 @@ class SourceOps(object):
             ]
         )
 
-    def _load_raw_file(self, path, file_format="csv", delimiter=",", header="true", schema=None):
+    def _load_raw_file(self, path, file_format="csv", delimiter=",", header="true", schema=None, **kwargs):
         """
         Load raw CSV data into SparkDF
         Args:
@@ -68,11 +68,17 @@ class SourceOps(object):
         Returns:
                 Spark DataFrame
         """
-        return self.spark.read.format(file_format) \
-            .option("header", header) \
-            .option("delimiter", delimiter) \
-            .schema(schema) \
-            .load(path)
+        if kwargs.get("source_name", None) == 'airlines':
+            return self.spark.read.format(file_format) \
+                .option("header", header) \
+                .option("delimiter", delimiter) \
+                .schema(schema) \
+                .load(path)
+        else:
+            return self.spark.read.format(file_format) \
+                .option("header", header) \
+                .option("delimiter", delimiter) \
+                .load(path)
 
     def _load_raw_sas(self, path):
         """
@@ -116,7 +122,8 @@ class SourceOps(object):
                             file_format=file_format,
                             delimiter=delimiter,
                             header=header,
-                            schema=self.airlines_schema if source_name == 'airlines' else None
+                            schema=self.airlines_schema if source_name == 'airlines' else None,
+                            source_name=source_name
                         )
                 except Exception as e:
                     logging.error(e)
