@@ -1,4 +1,5 @@
 import os
+import logging
 import configparser
 
 from ops.storage import (
@@ -8,10 +9,12 @@ from ops.storage import (
 
 from configs.sources import set_source_dict_cfg
 
-from ops.etl.source_ops import SourceOps
+from ops.etl.source_ops import SourceOps #, WarehouseOps
+from ops.data.data_cleaning import DataClean
 
 config = configparser.ConfigParser()
 config.read_file(open(os.path.realpath('./configs/dwh.cfg')))
+logger = logging.getLogger()
 output_data = f"s3a://{config.get('S3', 'BUCKET')}/{config.get('S3', 'OUTPUT_PATH')}/"
 
 
@@ -27,7 +30,7 @@ def _init():
     return create_spark_session()
 
 
-def _main(**kwargs):
+def _main():
     """
     Primary execution steps for ETL pipeline
 
@@ -48,24 +51,32 @@ def _main(**kwargs):
                         Raise error
     """
     # 0) initialise pipeline
+    logging.info('Initialising Spark environment and creating S3 bucket...')
     spark = _init()
 
     # 1) extract raw data from source
     # init objects and client
+    logging.info('Initialising source config and client...')
     sources_dict = dict()
     source_dict_cfg = set_source_dict_cfg()
     src_client = SourceOps(spark=spark, source_dict=source_dict_cfg)
 
     # iterate through source config object and load source data in dictionary object
+    logging.info('Processing source data into dictionary object...')
     for k, v in source_dict_cfg.items():
         src = src_client.load(v)
         sources_dict.update(src)
 
-    print(sources_dict)
+    ########################
+    # SUCCESS up to here
+    ########################
 
-    # 2) clean extracted data
-    # clean SparkDFs, filling null values, renaming columns,
-    # filtering on US only data, casting to appropriate field types
+    # # 2) clean extracted data
+    # logging.info('Initialising data cleaner client...')
+    # cleaner_client = DataClean(data_dict=sources_dict)
+    #
+    # logging.info('Cleaning source data...')
+    # cleaned_data_dict = cleaner_client.clean_dataset_dict()
 
     # 3) transform cleaned data
     # Do necessary aggregations and date formatting, to prep for facts table model

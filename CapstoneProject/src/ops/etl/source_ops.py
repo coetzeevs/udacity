@@ -1,4 +1,8 @@
+import logging
+
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+
+logger = logging.getLogger()
 
 
 class SourceOps(object):
@@ -9,6 +13,50 @@ class SourceOps(object):
     def __init__(self, spark, source_dict):
         self.spark = spark
         self.paths = source_dict
+        self.airlines_schema = StructType(
+            [
+                StructField(
+                    "airline_id",
+                    IntegerType(),
+                    True
+                ),
+                StructField(
+                    "name",
+                    StringType(),
+                    True
+                ),
+                StructField(
+                    "alias",
+                    StringType(),
+                    True
+                ),
+                StructField(
+                    "iata",
+                    StringType(),
+                    True
+                ),
+                StructField(
+                    "icao",
+                    StringType(),
+                    True
+                ),
+                StructField(
+                    "call_sign",
+                    StringType(),
+                    True
+                ),
+                StructField(
+                    "country",
+                    StringType(),
+                    True
+                ),
+                StructField(
+                    "active",
+                    StringType(),
+                    True
+                )
+            ]
+        )
 
     def _load_raw_file(self, path, file_format="csv", delimiter=",", header="true", schema=None):
         """
@@ -58,7 +106,6 @@ class SourceOps(object):
                 file_name = i.get("file_name")
                 header = i.get("header", "true")
                 delimiter = i.get("delimiter", ",")
-                schema = i.get("schema", None)
 
                 try:
                     if single_entity:
@@ -69,12 +116,12 @@ class SourceOps(object):
                             file_format=file_format,
                             delimiter=delimiter,
                             header=header,
-                            schema=schema
+                            schema=self.airlines_schema if source_name == 'airlines' else None
                         )
                 except Exception as e:
-                    # TODO: add logging
+                    logging.error(e)
                     raise e
             return ret_dict
         else:
-            # TODO: add logging
+            logging.error(TypeError('Incorrect arg type provided. config_spec must be of type list.'))
             raise TypeError('Incorrect arg type provided. config_spec must be of type list.')

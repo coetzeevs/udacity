@@ -1,7 +1,5 @@
 import os
 
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType
-
 
 def set_source_dict_cfg():
     """
@@ -84,51 +82,7 @@ def set_source_dict_cfg():
                     source_name='airlines',
                     file_name='airlines.dat',
                     delimiter=',',
-                    header='false',
-                    schema=StructType(
-                        [
-                            StructField(
-                                "Airline_ID",
-                                IntegerType(),
-                                True
-                            ),
-                            StructField(
-                                "Name",
-                                StringType(),
-                                True
-                            ),
-                            StructField(
-                                "Alias",
-                                StringType(),
-                                True
-                            ),
-                            StructField(
-                                "IATA",
-                                StringType(),
-                                True
-                            ),
-                            StructField(
-                                "ICAO",
-                                StringType(),
-                                True
-                            ),
-                            StructField(
-                                "Callsign",
-                                StringType(),
-                                True
-                            ),
-                            StructField(
-                                "Country",
-                                StringType(),
-                                True
-                            ),
-                            StructField(
-                                "Active",
-                                StringType(),
-                                True
-                            )
-                        ]
-                    )
+                    header='false'
                 )
             ]
         ),
