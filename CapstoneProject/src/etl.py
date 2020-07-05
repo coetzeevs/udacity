@@ -2,13 +2,9 @@ import configparser
 import logging
 import os
 
-from ops.storage import (
-    create_spark_session,
-    create_s3_bucket,
-)
-
 from configs.sources import set_source_dict_cfg
 
+from ops.storage.functions import Initializer
 from ops.data.data_cleaning import DataCleaningOps
 from ops.data.data_transformation import DataTransformationOps
 from ops.etl.source_ops import SourceOps
@@ -28,8 +24,9 @@ def _init():
     Returns:
             Spark Session object
     """
-    create_s3_bucket(config=config, acl="public-read")
-    return create_spark_session()
+    init_client = Initializer(config=config)
+    init_client.create_s3_bucket(acl="public-read")
+    return init_client.create_spark_session()
 
 
 def _main():

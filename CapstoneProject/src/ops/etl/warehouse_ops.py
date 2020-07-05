@@ -19,10 +19,12 @@ class WarehouseOps(object):
             if source_name == 'immigration_data':
                 # as-is state backup
                 # store immigration data in current state, before being joined and partitioned to create facts
-                data.write.mode('overwrite').parquet(self.destination_storage + f"/immigration_backup/{source_name}")
+                data.write.mode('overwrite')\
+                    .parquet(self.destination_storage + f"/immigration_backup/{source_name}.parquet")
             else:
                 # store dimension tables
-                data.write.mode('overwrite').parquet(self.destination_storage + f"/dimensions/dim_{source_name}")
+                data.write.mode('overwrite')\
+                    .parquet(self.destination_storage + f"/dimensions/dim_{source_name}.parquet")
 
         return
 
