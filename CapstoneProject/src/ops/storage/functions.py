@@ -30,10 +30,6 @@ class Initializer(object):
         spark.conf.set("spark.executor.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
         spark.conf.set("spark.driver.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
 
-        spark.sparkContext.hadoopConfiguration.set("fs.s3a.access.key", self.config.get('AWS', 'ACCESS_KEY_ID'))
-        spark.sparkContext.hadoopConfiguration.set("fs.s3a.secret.key", self.config.get('AWS', 'SECRET_ACCESS_KEY'))
-        spark.sparkContext.hadoopConfiguration.set("fs.s3a.endpoint", "s3.amazonaws.com")
-
         return spark
 
     def create_s3_bucket(self, acl="private"):
