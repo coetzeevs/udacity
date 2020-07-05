@@ -21,14 +21,28 @@ class Initializer(object):
         """
         spark = SparkSession \
             .builder \
-            .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:2.7.0") \
+            .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:2.7.1") \
             .config("spark.jars.packages", "saurfang:spark-sas7bdat:2.0.0-s_2.11") \
+            .config(
+                "spark.jars.packages", "com.amazonaws:aws-java-sdk-pom:1.10.34,org.apache.hadoop:hadoop-aws:2.7.3"
+            ) \
+            .config(
+                "spark.hadoop.fs.s3n.impl", "org.apache.hadoop.fs.s3native.NativeS3FileSystem"
+            ) \
+            .config(
+                "spark.hadoop.fs.s3n.awsAccessKeyId", self.config.get('AWS', 'ACCESS_KEY_ID')
+            ) \
+            .config(
+                "spark.hadoop.fs.s3n.awsSecretAccessKey", self.config.get('AWS', 'SECRET_ACCESS_KEY')
+            ) \
             .enableHiveSupport() \
             .getOrCreate()
 
         spark.conf.set("spark.sql.parquet.compression.codec", "gzip")
-        spark.conf.set("spark.executor.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
-        spark.conf.set("spark.driver.extraJavaOptions","-Dcom.amazonaws.services.s3.enableV4=true")
+        spark.conf.set("spark.executor.extraJavaOptions", "-Dcom.amazonaws.services.s3.enableV4=true")
+        spark.conf.set("spark.driver.extraJavaOptions", "-Dcom.amazonaws.services.s3.enableV4=true")
+
+
 
         return spark
 

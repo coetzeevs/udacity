@@ -13,7 +13,7 @@ from ops.etl.warehouse_ops import WarehouseOps
 config = configparser.ConfigParser()
 config.read_file(open(os.path.realpath('./configs/dwh.cfg')))
 logger = logging.getLogger()
-output_data_path = f"s3://{config.get('S3', 'BUCKET')}/{config.get('S3', 'OUTPUT_PATH')}/"
+output_data_path = f"s3n://{config.get('S3', 'BUCKET')}/{config.get('S3', 'OUTPUT_PATH')}/"
 
 
 def _init():
