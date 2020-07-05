@@ -9,13 +9,14 @@ from ops.storage import (
 
 from configs.sources import set_source_dict_cfg
 
-from ops.etl.source_ops import SourceOps #, WarehouseOps
-from ops.data.data_cleaning import DataClean
+from ops.etl.source_ops import SourceOps, WarehouseOps
+from ops.data.data_cleaning import DataCleaningOps
+from ops.data.data_transformation import DataTransformationOps
 
 config = configparser.ConfigParser()
 config.read_file(open(os.path.realpath('./configs/dwh.cfg')))
 logger = logging.getLogger()
-output_data = f"s3a://{config.get('S3', 'BUCKET')}/{config.get('S3', 'OUTPUT_PATH')}/"
+output_data_path = f"s3a://{config.get('S3', 'BUCKET')}/{config.get('S3', 'OUTPUT_PATH')}/"
 
 
 def _init():
@@ -69,22 +70,34 @@ def _main():
 
     # 2) clean extracted data
     logging.info('Initialising data cleaner client...')
-    cleaner_client = DataClean(data_dict=sources_dict)
+    cleaner_client = DataCleaningOps(data_dict=sources_dict)
 
     logging.info('Cleaning source data...')
     cleaned_data_dict = cleaner_client.clean_dataset_dict()
-
-    print(cleaned_data_dict)
 
     ########################
     # SUCCESS up to here
     ########################
 
     # 3) transform cleaned data
-    # Do necessary aggregations and date formatting, to prep for facts table model
+    logging.info('Initialising data transformation client...')
+    transformation_client = DataTransformationOps(data_dict=cleaned_data_dict)
+
+    logging.info('Transformation cleaned data...')
+    transformed_data_dict = transformation_client.transform_data()
+
+    print(transformed_data_dict)
 
     # 4) create logical models and store in S3
-    # create logical model in parquet format, stored in S3 bucket
+    logging.info('Initialising warehousing ops client...')
+    warehousing_client = WarehouseOps(
+        spark=spark,
+        data_dict=transformed_data_dict,
+        destination_storage=output_data_path
+    )
+    success = warehousing_client.to_storage_parquet()
+
+    print(success)
 
     # 5) validate final results
     # run validation checks against final data model, checking for data existing in each source,

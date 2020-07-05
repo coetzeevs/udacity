@@ -12,7 +12,7 @@ from pyspark.sql.functions import (
 logger = logging.getLogger()
 
 
-class DataClean(object):
+class DataCleaningOps(object):
     """
     Class object to clean the initialised raw data sets
     """
@@ -35,16 +35,17 @@ class DataClean(object):
             data = df \
                 .withColumn("count", col("Count").cast("integer")) \
                 .groupBy(
-                    col("City"),
-                    col("State"),
-                    col("Median Age"),
-                    col("Male Population"),
-                    col("Female Population"),
-                    col("Total Population"),
-                    col("Number of Veterans"),
-                    col("Foreign-born"),
-                    col("Average Household Size"),
-                    col("State Code"))\
+                    col("City").alias("city"),
+                    col("State").alias("state"),
+                    col("Median Age").alias("median_age"),
+                    col("Male Population").alias("male_population"),
+                    col("Female Population").alias("female_population"),
+                    col("Total Population").alias("total_population"),
+                    col("Number of Veterans").alias("number_of_veterans"),
+                    col("Foreign-born").alias("foreign_born"),
+                    col("Average Household Size").alias("avg_household_size"),
+                    col("State Code").alias("state_code")
+                )\
                 .pivot("Race")\
                 .agg(_sum("count").cast("integer"))\
                 .fillna(
@@ -82,7 +83,8 @@ class DataClean(object):
                     (col("type").isin("large_airport", "medium_airport", "small_airport"))
                 )\
                 .withColumn("iso_region", substring(col("iso_region"), 4, 2))\
-                .withColumn("elevation_ft", col("elevation_ft").cast("float"))
+                .withColumn("elevation_ft", col("elevation_ft").cast("float"))\
+                .withColumnRenamed("local_code", "port_code")
 
             return dict(airports=data)
         else:
@@ -105,7 +107,7 @@ class DataClean(object):
             return dict(airport_codes=data)
         else:
             logger.error(ValueError('No dataset named "airport_codes" found in sources dict.'))
-            raise ValueError('No dataset named "countries" found in sources dict.')
+            raise ValueError('No dataset named "airport_codes" found in sources dict.')
 
     def _clean_countries(self):
         """
@@ -120,7 +122,8 @@ class DataClean(object):
         df = self.data_dict.get('countries', None)
         if df is not None:
             data = df\
-                .withColumn("country_code", col("code").cast("integer"))
+                .withColumn("country_code", col("code").cast("integer"))\
+                .drop("code")
             return dict(countries=data)
         else:
             logger.error(ValueError('No dataset named "countries" found in sources dict.'))
@@ -159,7 +162,8 @@ class DataClean(object):
         df = self.data_dict.get('entry_modes', None)
         if df is not None:
             data = df\
-                .withColumn("mode_code", col("mode").cast("integer"))
+                .withColumn("mode_code", col("mode").cast("integer"))\
+                .drop("mode")
             return dict(entry_modes=data)
         else:
             logger.error(ValueError('No dataset named "entry_modes" found in sources dict.'))
