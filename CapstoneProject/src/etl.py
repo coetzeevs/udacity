@@ -67,16 +67,18 @@ def _main():
         src = src_client.load(v)
         sources_dict.update(src)
 
+    # 2) clean extracted data
+    logging.info('Initialising data cleaner client...')
+    cleaner_client = DataClean(data_dict=sources_dict)
+
+    logging.info('Cleaning source data...')
+    cleaned_data_dict = cleaner_client.clean_dataset_dict()
+
+    print(cleaned_data_dict)
+
     ########################
     # SUCCESS up to here
     ########################
-
-    # # 2) clean extracted data
-    # logging.info('Initialising data cleaner client...')
-    # cleaner_client = DataClean(data_dict=sources_dict)
-    #
-    # logging.info('Cleaning source data...')
-    # cleaned_data_dict = cleaner_client.clean_dataset_dict()
 
     # 3) transform cleaned data
     # Do necessary aggregations and date formatting, to prep for facts table model
