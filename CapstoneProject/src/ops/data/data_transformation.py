@@ -27,7 +27,7 @@ class DataTransformationOps(object):
         """
         df = self.data_dict.get('demographics', None)
         if df is not None:
-            tmp = df \
+            data = df \
                 .groupBy(
                     col("state_code").alias("State_code"),
                     col("state")
@@ -40,9 +40,8 @@ class DataTransformationOps(object):
                     _sum("Black or African-American").alias("black_or_african_american"),
                     _sum("Hispanic or Latino").alias("hispanic_or_latino"),
                     _sum("White").alias("white")
-                )
-
-            data = tmp.select.withColumn(
+                ) \
+                .withColumn(
                     "male_population_ratio",
                     round(
                         (col("male_population") / col("total_population")), 2
