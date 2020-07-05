@@ -1,4 +1,3 @@
-
 class WarehouseOps(object):
     """
     Class object to handle creating the final logical data models and store to parquet in S3
@@ -57,7 +56,7 @@ class WarehouseOps(object):
             .join(self.data_dict['airports'],
                   immigration_facts["port_code"] == self.data_dict['airports']["port_code"], "left_semi") \
             .join(self.data_dict['airlines'],
-                  immigration_facts["airline"] == self.data_dict['airlines']["iata"], "left_semi") \
+                  immigration_facts["airline"] == self.data_dict['airlines']["airline"], "left_semi") \
             .join(self.data_dict['countries'],
                   immigration_facts["orig_country_code"] == self.data_dict['countries']["country_code"], "left_semi") \
             .join(self.data_dict['visa_types'],
@@ -81,4 +80,4 @@ class WarehouseOps(object):
         self._create_fact_data_model()
         self._fact_to_storage_parquet()
 
-        return True
+        return True, self.data_dict

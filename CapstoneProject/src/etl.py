@@ -7,6 +7,7 @@ from configs.sources import set_source_dict_cfg
 from ops.storage.functions import Initializer
 from ops.data.data_cleaning import DataCleaningOps
 from ops.data.data_transformation import DataTransformationOps
+from ops.data.data_validation import DataValidationOps
 from ops.etl.source_ops import SourceOps
 from ops.etl.warehouse_ops import WarehouseOps
 
@@ -40,8 +41,6 @@ def _main():
             3) transform cleaned data
             4) create logical models and store in S3
             5) validate final results
-    Args:
-        **kwargs:
 
     Returns:
             Boolean: True if all validations passed
@@ -69,6 +68,7 @@ def _main():
     print('########## sources ##############')
     print(sources_dict)
     print('########## sources ##############')
+
     # 2) clean extracted data
     logging.info('Initialising data cleaner client...')
     cleaner_client = DataCleaningOps(data_dict=sources_dict)
@@ -79,9 +79,6 @@ def _main():
     print('########## cleaned ##############')
     print(cleaned_data_dict)
     print('########## cleaned ##############')
-    ########################
-    # SUCCESS up to here
-    ########################
 
     # 3) transform cleaned data
     logging.info('Initialising data transformation client...')
@@ -101,15 +98,35 @@ def _main():
         data_dict=transformed_data_dict,
         destination_storage=output_data_path
     )
-    success = warehousing_client.to_storage_parquet()
+    success, stored_data_dict = warehousing_client.to_storage_parquet()
 
-    print('########## warehoused ##############')
+    print('########## warehoused success ##############')
     print(success)
-    print('########## warehoused ##############')
+    print('########## warehoused success ##############')
+
+    print('########## stored_data_dict ##############')
+    print(stored_data_dict)
+    print('########## stored_data_dict ##############')
 
     # 5) validate final results
-    # run validation checks against final data model, checking for data existing in each source,
-    # and confirming join results between fact and dim tables yields expected results
+    logging.info('Initialising data validation client...')
+    validation_client = DataValidationOps(
+        spark=spark,
+        data_dict=stored_data_dict,
+        source_path_root=output_data_path
+    )
+
+    logging.info('Validate final data model...')
+    validated = validation_client.validate()
+
+    print('########## validated ##############')
+    print(validated)
+    print('########## validated ##############')
+
+    if validated:
+        return validated
+    else:
+        raise SystemError('ETL pipeline failed to validate resulting data. Please investigate.')
 
 
 if __name__ == '__main__':

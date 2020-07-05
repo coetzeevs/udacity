@@ -38,11 +38,9 @@ class Initializer(object):
             .enableHiveSupport() \
             .getOrCreate()
 
-        spark.conf.set("spark.sql.parquet.compression.codec", "gzip")
+        spark.conf.set("spark.sql.parquet.compression.codec", "snappy")
         spark.conf.set("spark.executor.extraJavaOptions", "-Dcom.amazonaws.services.s3.enableV4=true")
         spark.conf.set("spark.driver.extraJavaOptions", "-Dcom.amazonaws.services.s3.enableV4=true")
-
-
 
         return spark
 

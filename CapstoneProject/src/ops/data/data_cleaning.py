@@ -222,7 +222,8 @@ class DataCleaningOps(object):
         df = self.data_dict.get('airlines', None)
         if df is not None:
             data = df\
-                .where((col("iata").isNotNull()) & (col("airline_id") > 1))
+                .where((col("iata").isNotNull()) & (col("airline_id") > 1)) \
+                .withColumnRenamed("iata", "airline")
             return dict(airlines=data)
         else:
             logger.error(ValueError('No dataset named "airlines" found in sources dict.'))
@@ -298,9 +299,9 @@ class DataCleaningOps(object):
                 col("counter"),
                 col("arrival_date"),
                 col("departure_date"))
-        
+
             return dict(immigration_data=data)
-    
+
         else:
             logger.error(ValueError('No dataset named "immigration_data" found in sources dict.'))
             raise ValueError('No dataset named "immigration_data" found in sources dict.')
