@@ -5,6 +5,7 @@ from pyspark.sql.functions import (
     expr,
     lit,
     substring,
+    sum as _sum,
     to_date
 )
 
@@ -45,7 +46,7 @@ class DataClean(object):
                     col("Average Household Size"),
                     col("State Code"))\
                 .pivot("Race")\
-                .agg(sum("count").cast("integer"))\
+                .agg(_sum("count").cast("integer"))\
                 .fillna(
                     {
                         "American Indian and Alaska Native": 0,
@@ -249,8 +250,8 @@ class DataClean(object):
                 .withColumn("age", col("i94bir").cast("integer"))\
                 .withColumn("counter", col("count").cast("integer"))\
                 .withColumn("sas_date", to_date(lit("01/01/1960"), "MM/dd/yyyy"))\
-                .withColumn("arrival_date", expr("date_add(data_base_sas, arrdate)"))\
-                .withColumn("departure_date", expr("date_add(data_base_sas, depdate)")) \
+                .withColumn("arrival_date", expr("date_add(sas_date, arrdate)"))\
+                .withColumn("departure_date", expr("date_add(sas_date, depdate)")) \
                 .withColumnRenamed("i94addr", "state_code") \
                 .withColumnRenamed("i94port", "port_code") \
                 .withColumnRenamed("visapost", "visa_post") \
