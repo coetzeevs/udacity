@@ -36,7 +36,7 @@ def set_source_dict_cfg():
             ]
         ),
         provided_sup=dict(
-            os.path.realpath('../data/sources/supplementary/'),
+            folder_path=os.path.realpath('../data/sources/supplementary/'),
             file_format='csv',
             single_entity=False,
             config_spec=[
@@ -83,6 +83,7 @@ def set_source_dict_cfg():
                 dict(
                     source_name='airlines',
                     file_name='airlines.dat',
+                    delimiter=',',
                     header='false',
                     schema=StructType(
                         [

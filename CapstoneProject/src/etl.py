@@ -58,8 +58,8 @@ def _main(**kwargs):
 
     # iterate through source config object and load source data in dictionary object
     for k, v in source_dict_cfg.items():
-        src_name, data = src_client.load(k, v)
-        sources_dict[src_name] = data
+        src = src_client.load(v)
+        sources_dict.update(src)
 
     print(sources_dict)
 
