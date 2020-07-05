@@ -86,6 +86,24 @@ class DataClean(object):
             logger.error(ValueError('No dataset named "airports" found in sources dict.'))
             raise ValueError('No dataset named "airports" found in sources dict.')
 
+    def _clean_airport_codes(self):
+        """
+        Class method to clean airport code data
+
+        Operations:
+                    - rename code field to airport code
+        Returns:
+                [dict] - object with source-name: SparkDF key-value pairs
+        """
+        df = self.data_dict.get('airport_codes', None)
+        if df is not None:
+            data = df\
+                .withColumnRenamed("code", "airport_code")
+            return dict(airport_codes=data)
+        else:
+            logger.error(ValueError('No dataset named "airport_codes" found in sources dict.'))
+            raise ValueError('No dataset named "countries" found in sources dict.')
+
     def _clean_countries(self):
         """
         Class method to clean countries data
@@ -288,6 +306,7 @@ class DataClean(object):
         """
         self.data_dict.update(self._clean_airlines())
         self.data_dict.update(self._clean_airports())
+        self.data_dict.update(self._clean_airport_codes())
         self.data_dict.update(self._clean_cities())
         self.data_dict.update(self._clean_countries())
         self.data_dict.update(self._clean_demographics())
