@@ -4,7 +4,7 @@ Udacity Data Engineering Nano Degree.
 
 ## Project context
 This is the Udacity provided project. Three datasets are provided to work with, which is explained further in 
-a section below called *Datasets*. 
+a section below called `Datasets`. 
 
 ### Project purpose
 The purpose of the project is to combine skills that have been learned throughout the program and demonstrate 
@@ -43,7 +43,7 @@ of the individual data tables.
 ## Datasets
 The main dataset includes data on immigration to the United States. 
 Supplementary datasets include data on airport codes and U.S. city demographics. This data is provided by Udacity, 
-specifically for this project. Additional data is derived from the */data/docs/I94_SAS_Labels_Descriptions.SAS*
+specifically for this project. Additional data is derived from the `/data/docs/I94_SAS_Labels_Descriptions.SAS`
 document also provided along with the immigration data. This includes:
 - countries
 - entry modes
@@ -63,11 +63,11 @@ are then:
 1. Clean the source data
 1. Transform any datasets that require some steps of transformation
 
-Ingestion of the data is taken care of using the class object created in *src/ops/etl/storage_ops.py*. A configuration 
-for each source dataset is recorded in a data dictionary in *src/configs/sources.py*. This configuration is then used 
+Ingestion of the data is taken care of using the class object created in `src/ops/etl/storage_ops.py`. A configuration 
+for each source dataset is recorded in a data dictionary in `src/configs/sources.py`. This configuration is then used 
 to ingest the data and storing each resultant Spark DataFrame in a dictionary object, used for ease of handling.
 
-Cleaning is taken care of using the class object created in *src/ops/data/data_cleaning.py*. 
+Cleaning is taken care of using the class object created in `src/ops/data/data_cleaning.py`. 
 The primary cleaning steps involve:
 - Filling the demographics dataset null values with 0, after grouping by a selection of columns and pivoting on race.
 - Filter the airports dataset to select only US airports, and discard any data points not related to a specific 
@@ -77,7 +77,7 @@ airport type
 - Select only applicable data points from the immigration dataset and rename the columns to appropriate values for use
 down the line
 
-Data transformation operations are taken care of using the class object created in *src/ops/data/data_transformation.py*.
+Data transformation operations are taken care of using the class object created in `src/ops/data/data_transformation.py`.
 This includes:
 - Aggregate demographics data, grouping by state and calculating gender and race ratios for each state
 - Split arrival date into date parts (day, month, year) for the immigrations dataset (this is used to partition the
@@ -89,7 +89,7 @@ involved.
 
 ## Define the Data Model
 The second-to-last step is to create the final data model and store the data in the destination storage bucket in AWS S3.
-This is taken care of with the class object created in *src/ops/etl/warehouse_ops.py*. The three primary steps here are:
+This is taken care of with the class object created in `src/ops/etl/warehouse_ops.py`. The three primary steps here are:
 - Store each supplementary table (having been cleaned and transformed) as the dimensions tables
 - Create the facts table from the immigrations data and store
 
@@ -98,7 +98,7 @@ Again, more detail associated with each step is documented under the class objec
 
 ## Validate the Data Model
 The final step is validation of the resultant data model structure is performed using the class object created in 
-*src/ops/data/data_validation.py*. Here the data is ingested from the storage bucket intended for the final storage.
+`src/ops/data/data_validation.py`. Here the data is ingested from the storage bucket intended for the final storage.
 This is the first validation check: can the data be read in from the source location, from parquet. Along with this is 
 a check to ensure that data is received. Each dataset's records are counted and the assertion is that the record count is
 greater than zero.
@@ -107,4 +107,30 @@ and assert if correct values are returned. If all checks are passed a boolean va
 is considered a success. If these checks fail, an error is raised.
 
 ## Final data model details
-The final data model dictionary is available in *data/docs/data_dictionaries.md*. 
+The final data model dictionary is available in `data/docs/data_dictionaries.md`. 
+
+## Why did you choose the model you chose?
+The final data model is intended to run queries to help understand things like how many migrants enter the US but never leave,
+identify popular entry modes for migrants into the US, identify which visa types are the most used to enter the US,
+understand which airlines are favoured for entering the US given specific countries of origin, and the list goes on.
+The structure of the data model is chosen exactly to facilitate these lines of enquiry.
+
+## How would Spark or Airflow be incorporated?
+As Spark is already incorporated, the only component missing is Airflow. Since Airflow lends itself perfectly to the use 
+of S3 operations and has operators for both Spark and S3, it's a natural fit to transform each of the steps outlined in 
+the ETL process (see `src/etl.py`) into steps in a DAG. 
+
+## Propose how often the data should be updated and why.
+Data of this nature should be updated daily as timestamped data isn't present in the transactions dataset so anything 
+more granular is redundant. Further the nature of the analytics doesn't require near-realtime updates.
+
+## What-if scenarios
+### If the data was increased by 100x.
+Spark is capable of handling this due to its ability to distribute workloads amongst many worker nodes
+
+### If the pipelines were run on a daily basis by 7am.
+I'd use the same pipeline construction incorporated in Airflow and set up an required time to complete for the DAG run.
+
+### If the database needed to be accessed by 100+ people.
+This is no problem for AWS S3 and the solution lends itself perfectly to this scenario.
+ 
