@@ -1,0 +1,95 @@
+{
+  'immigration_data': DataFrame[
+    cic_id: int,
+    port_code: string,
+    state_code: string,
+    visa_post: string,
+    matflag: string,
+    dtaddto: string,
+    gender: string,
+    airline: string,
+    admnum: double,
+    fltno: string,
+    visa_type: string,
+    mode_code: int,
+    orig_country_code: int,
+    cit_country_code: int,
+    year: int,
+    month: int,
+    birth_year: int,
+    age: int,
+    counter: int,
+    arrival_date: date,
+    departure_date: date,
+    arrival_year: string,
+    arrival_month: string,
+    arrival_day: string
+  ],
+  'airport_codes': DataFrame[
+    airport_code: string,
+    airport_name: string
+  ],
+  'airports': DataFrame[
+    ident: string,
+    type: string,
+    name: string,
+    elevation_ft: float,
+    continent: string,
+    iso_country: string,
+    iso_region: string,
+    municipality: string,
+    gps_code: string,
+    iata_code: string,
+    port_code: string,
+    coordinates: string
+  ],
+  'cities': DataFrame[
+    city_code: string,
+    city_name: string
+  ],
+  'countries': DataFrame[
+    country_name: string,
+    country_code: int
+  ],
+  'entry_modes': DataFrame[
+    mode_name: string,
+    mode_code: int
+  ],
+  'states': DataFrame[
+    state_name: string,
+    state_code: string
+  ],
+  'demographics': DataFrame[
+    State_code: string,
+    state: string,
+    total_population: double,
+    male_population: double,
+    female_population: double,
+    american_indian_and_alaska_native: bigint,
+    asian: bigint,
+    black_or_african_american: bigint,
+    hispanic_or_latino: bigint,
+    white: bigint,
+    male_population_ratio: double,
+    female_population_ratio: double,
+    american_indian_and_alaska_native_ratio: double,
+    asian_ratio: double,
+    black_or_african_american_ratio: double,
+    hispanic_or_latino_ratio: double,
+    white_ratio: double
+  ],
+  'visa_types': DataFrame[
+    visa_code: int,
+    visa_type: string
+  ],
+  'airlines': DataFrame[
+    airline_id: int,
+    name: string,
+    alias: string,
+    airline: string,
+    icao: string,
+    call_sign: string,
+    country: string,
+    active: string
+  ]
+}

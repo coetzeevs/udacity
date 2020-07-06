@@ -1,0 +1,90 @@
+{
+  'immigration_data': DataFrame[
+    cic_id: int,
+    port_code: string,
+    state_code: string,
+    visa_post: string,
+    matflag: string,
+    dtaddto: string,
+    gender: string,
+    airline: string,
+    admnum: double,
+    fltno: string,
+    visa_type: string,
+    mode_code: int,
+    orig_country_code: int,
+    cit_country_code: int,
+    year: int,
+    month: int,
+    birth_year: int,
+    age: int,
+    counter: int,
+    arrival_date: date,
+    departure_date: date
+  ],
+  'airport_codes': DataFrame[
+    airport_code: string,
+    airport_name: string
+  ],
+  'airports': DataFrame[
+    ident: string,
+    type: string,
+    name: string,
+    elevation_ft: float,
+    continent: string,
+    iso_country: string,
+    iso_region: string,
+    municipality: string,
+    gps_code: string,
+    iata_code: string,
+    port_code: string,
+    coordinates: string
+  ],
+  'cities': DataFrame[
+    city_code: string,
+    city_name: string
+  ],
+  'countries': DataFrame[
+    country_name: string,
+    country_code: int
+  ],
+  'entry_modes': DataFrame[
+    mode_name: string,
+    mode_code: int
+  ],
+  'states': DataFrame[
+    state_name: string,
+    state_code: string
+  ],
+  'demographics': DataFrame[
+    city: string,
+    state: string,
+    median_age: string,
+    male_population: string,
+    female_population: string,
+    total_population: string,
+    number_of_veterans: string,
+    foreign_born: string,
+    avg_household_size: string,
+    state_code: string,
+    AmericanIndianandAlaskaNative: int,
+    Asian: int,
+    BlackorAfrican-American: int,
+    HispanicorLatino: int,
+    White: int
+  ],
+  'visa_types': DataFrame[
+    visa_code: int,
+    visa_type: string
+  ],
+  'airlines': DataFrame[
+    airline_id: int,
+    name: string,
+    alias: string,
+    airline: string,
+    icao: string,
+    call_sign: string,
+    country: string,
+    active: string
+  ]
+}

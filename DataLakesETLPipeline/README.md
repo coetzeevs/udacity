@@ -17,7 +17,8 @@ The code base establishes an ETL pipeline using Spark to build a data lake hoste
 - **Log dataset**: All log data are in JSON format under a subdirectories stored in an S3 bucket: *s3://udacity-dend/log_data* 
 
 ### Data lake schema
-The data lake consists of songplay data (acting as the fact table) and user, artist, song, and time datasets (acting as the dimension tables), which is all structured in a start schema.
+The data lake consists of songplay data (acting as the fact table) and user, artist, song, and time datasets 
+(acting as the dimension tables), which is all structured in a start schema.
 
 ### Tables
 **songplays**

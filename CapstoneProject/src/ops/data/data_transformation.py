@@ -29,7 +29,7 @@ class DataTransformationOps(object):
         if df is not None:
             data = df \
                 .groupBy(
-                    col("state_code").alias("State_code"),
+                    col("state_code").alias("state_code"),
                     col("state")
                 ).agg(
                     _sum("total_population").alias("total_population"),

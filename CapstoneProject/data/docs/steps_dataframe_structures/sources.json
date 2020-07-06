@@ -1,0 +1,94 @@
+{
+  'immigration_data': DataFrame[
+    cicid: double,
+    i94yr: double,
+    i94mon: double,
+    i94cit: double,
+    i94res: double,
+    i94port: string,
+    arrdate: double,
+    i94mode: double,
+    i94addr: string,
+    depdate: double,
+    i94bir: double,
+    i94visa: double,
+    count: double,
+    dtadfile: string,
+    visapost: string,
+    occup: string,
+    entdepa: string,
+    entdepd: string,
+    entdepu: string,
+    matflag: string,
+    biryear: double,
+    dtaddto: string,
+    gender: string,
+    insnum: string,
+    airline: string,
+    admnum: double,
+    fltno: string,
+    visatype: string
+  ],
+  'airport_codes': DataFrame[
+    code: string,
+    airport_name: string
+  ],
+  'airports': DataFrame[
+    ident: string,
+    type: string,
+    name: string,
+    elevation_ft: string,
+    continent: string,
+    iso_country: string,
+    iso_region: string,
+    municipality: string,
+    gps_code: string,
+    iata_code: string,
+    local_code: string,
+    coordinates: string
+  ],
+  'cities': DataFrame[
+    abr_city: string,
+    City: string
+  ],
+  'countries': DataFrame[
+    code: string,
+    country_name: string
+  ],
+  'entry_modes': DataFrame[
+    mode: string,
+    mode_name: string
+  ],
+  'states': DataFrame[
+    State: string,
+    Abbreviation: string
+  ],
+  'demographics': DataFrame[
+    City: string,
+    State: string,
+    MedianAge: string,
+    MalePopulation: string,
+    FemalePopulation: string,
+    TotalPopulation: string,
+    NumberofVeterans: string,
+    Foreign-born: string,
+    AverageHouseholdSize: string,
+    StateCode: string,
+    Race: string,
+    Count: string
+  ],
+  'visa_types': DataFrame[
+    visa_code: string,
+    visa: string
+  ],
+  'airlines': DataFrame[
+    airline_id: int,
+    name: string,
+    alias: string,
+    iata: string,
+    icao: string,
+    call_sign: string,
+    country: string,
+    active: string
+  ]
+}

@@ -65,10 +65,6 @@ def _main():
         src = src_client.load(v)
         sources_dict.update(src)
 
-    print('########## sources ##############')
-    print(sources_dict)
-    print('########## sources ##############')
-
     # 2) clean extracted data
     logging.info('Initialising data cleaner client...')
     cleaner_client = DataCleaningOps(data_dict=sources_dict)
@@ -76,20 +72,12 @@ def _main():
     logging.info('Cleaning source data...')
     cleaned_data_dict = cleaner_client.clean_dataset_dict()
 
-    print('########## cleaned ##############')
-    print(cleaned_data_dict)
-    print('########## cleaned ##############')
-
     # 3) transform cleaned data
     logging.info('Initialising data transformation client...')
     transformation_client = DataTransformationOps(data_dict=cleaned_data_dict)
 
     logging.info('Transformation cleaned data...')
     transformed_data_dict = transformation_client.transform_data()
-
-    print('########## transformed ##############')
-    print(transformed_data_dict)
-    print('########## transformed ##############')
 
     # 4) create logical models and store in S3
     logging.info('Initialising warehousing ops client...')
@@ -99,14 +87,6 @@ def _main():
         destination_storage=output_data_path
     )
     success, stored_data_dict = warehousing_client.to_storage_parquet()
-
-    print('########## warehoused success ##############')
-    print(success)
-    print('########## warehoused success ##############')
-
-    print('########## stored_data_dict ##############')
-    print(stored_data_dict)
-    print('########## stored_data_dict ##############')
 
     # 5) validate final results
     logging.info('Initialising data validation client...')
@@ -118,10 +98,6 @@ def _main():
 
     logging.info('Validate final data model...')
     validated = validation_client.validate()
-
-    print('########## validated ##############')
-    print(validated)
-    print('########## validated ##############')
 
     if validated:
         return validated
