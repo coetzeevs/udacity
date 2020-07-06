@@ -10,6 +10,7 @@ offered by Udacity.
 - [RedshiftETLPipeline](https://github.com/coetzeevs/udacity/tree/master/RedshiftETLPipeline)  | Project 3
 - [DataLakesETLPipeline](https://github.com/coetzeevs/udacity/tree/master/DataLakesETLPipeline) | Project 4
 - [AirflowELTPipeline](https://github.com/coetzeevs/udacity/tree/master/AirflowETLPipeline) | Project 5
+- [CapstoneProject](https://github.com/coetzeevs/udacity/tree/master/CapstoneProject) | Project 6
 
 Each of the project folders contains a README explaining the context and project files.
 
