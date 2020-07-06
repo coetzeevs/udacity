@@ -1,4 +1,4 @@
-#### NOTE: in order to run this you need an environment with Spark installed and configured, and you need an AWS account with and secret access key provisioned
+#### NOTE: in order to run this you need an environment with Spark installed and configured, and you need an AWS account with a secret access key provisioned
 
 # Udacity Data Engineering Nano Degree - Capstone Project
 This repository holds the project code for the capstone project completed towards finishing the 
