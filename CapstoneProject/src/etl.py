@@ -100,6 +100,7 @@ def _main():
     validated = validation_client.validate()
 
     if validated:
+        logging.info('Process completed successfully - all validation checks have passed.')
         return validated
     else:
         raise SystemError('ETL pipeline failed to validate resulting data. Please investigate.')
