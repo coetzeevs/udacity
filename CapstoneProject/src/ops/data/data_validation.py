@@ -58,6 +58,76 @@ class DataValidationOps(object):
         """
         return fact.select(col(on_fact)).distinct().join(dim, fact[on_fact] == dim[on_dim], how).count() == assert_value
 
+    def _facts_data_type_integrity(self):
+        """
+        Class method to validate whether the facts data model adheres to the following constraint:
+            - Data types: check that the resultant fact model adheres to the intended model data types
+        Returns:
+                [list] - Either False if integrity check fails, True otherwise - for each data field checked
+        """
+        target_data_types_model = dict(
+            cic_id="int",
+            port_code="string",
+            state_code="string",
+            visa_post="string",
+            matflag="string",
+            dtaddto="string",
+            gender="string",
+            airline="string",
+            admnum="double",
+            fltno="string",
+            visa_type="string",
+            mode_code="int",
+            orig_country_code="int",
+            cit_country_code="int",
+            year="int",
+            month="int",
+            birth_year="int",
+            age="int",
+            counter="int",
+            arrival_date="date",
+            departure_date="date",
+            arrival_year="string",
+            arrival_month="string",
+            arrival_day="string"
+        )
+        immigration_fact_data_types = self.data_dict['immigration_facts'].dtypes
+        check = list()
+
+        # iterate over each data type tuple in the immigration_fact_data_types list and return true if the field type
+        # matches with the expected data type from the dictionary config above
+        for tup in immigration_fact_data_types:
+            field_name = tup[0]
+            field_type = tup[1]
+
+            check.append(target_data_types_model[field_name] == field_type)
+
+        return check
+
+    def _fact_uniqueness_constraint(self):
+        """
+        Class method to validate whether the facts data model adheres to the following constraint:
+            - Uniqueness: rows are unique and are identifiable by a unique key
+        Returns:
+                [list] - Either False if integrity check fails, True otherwise
+        """
+        check = list()
+
+        # check if the entire count of the facts table's rows matches a distinct count of the rows
+        check.append(
+            self.data_dict["immigration_facts"].count() == self.data_dict["immigration_facts"].distinct().count()
+        )
+
+        # check if the count of rows matches the distinct count of a unique identifier field - in this case "cic_id"
+        # this checks the unique identifier constraint
+        check.append(
+            self.data_dict["immigration_facts"].count() == self.data_dict["immigration_facts"].select(
+                ["cic_id"]
+            ).distinct().count()
+        )
+
+        return check
+
     def validate(self):
         """
         Class method to run through validation checks and return result.
@@ -66,6 +136,8 @@ class DataValidationOps(object):
         """
         checks = list()
         checks.append(self._validate_has_rows())
+        checks.append(self._facts_data_type_integrity())
+        checks.append(self._fact_uniqueness_constraint())
 
         # airports
         checks.append(

@@ -115,6 +115,27 @@ identify popular entry modes for migrants into the US, identify which visa types
 understand which airlines are favoured for entering the US given specific countries of origin, and the list goes on.
 The structure of the data model is chosen exactly to facilitate these lines of enquiry.
 
+## Why did you choose the tools and technologies you chose?
+Apache Spark is a purpose built framework to facilitate processing, querying and analysing large datasets centered in 
+the realm of BigData. Computation is done in memory, so the physical architecture of a machine/computer made to process
+data rapidly is utilised, in stead of the CPU (for example). It makes processing faster than, for example, MapReduce and 
+and similar methodologies. Some of the features elevating it above competitor products include:
+- It is orders of magnitude faster than traditional large scale data processing platforms/technologies
+- It's easy to use in the most common data processing languages, including Python, R, and Scala
+- Several additional libraries are provided for, like SQL, Streaming, and Graph computation
+
+An important drawback to consider when working with Spark includes Spark job tuning can be a pain and it can end up 
+being a large chunk of the development time.
+
+Amazon S3 is chosen as the storage and access layer for this solution for the following reasons:
+- Access management is made extremely simple and as granular as needed, thereby helping enforce good data policies
+and protecting sensitive data where and when necessary
+- Storage format is not limited in any form and the user is not constrained to using something like a relational database
+model
+- It's simple to use and to put into use for existing systems
+- It's reliable and robust, as it's managed external to the company using it (AWS boasts a 99.99% durability for its 
+storage objects)
+
 ## How would Spark or Airflow be incorporated?
 As Spark is already incorporated, the only component missing is Airflow. Since Airflow lends itself perfectly to the use 
 of S3 operations and has operators for both Spark and S3, it's a natural fit to transform each of the steps outlined in 
@@ -126,11 +147,37 @@ more granular is redundant. Further the nature of the analytics doesn't require 
 
 ## What-if scenarios
 ### If the data was increased by 100x.
-Spark is capable of handling this due to its ability to distribute workloads amongst many worker nodes
+Spark is capable of handling masses of data by distributing workloads amongst worker nodes within the Spark cluster. That 
+is, there is a driver node that processes the Spark job configuration and then distributes each of the tasks that can be 
+run in parallel across the available worker nodes. There is some configuration required on the part of the engineer to 
+ensure the Spark job is configured to be distributable, however. 
+
+Further, if necessary, Airflow can be incorporated to achieve a similar solution since it also handles workload 
+distribution across different worker nodes. The added possibility 
+is making use of partitioning in Airflow whereby the data is processed in intervals over time, making the amount of data 
+to "ETL" for each process less, thus alleviating pressure on the architecture. (A similar notion of partitioning the data 
+for parallel processing is present in Spark).   
 
 ### If the pipelines were run on a daily basis by 7am.
-I'd use the same pipeline construction incorporated in Airflow and set up an required time to complete for the DAG run.
+The scenario is slightly ambiguous. It can be interpreted in two ways:
+1. The data is required to be accessible by 7am each day
+1. The pipeline should start off at 7am each day
+
+In the case of 1, I'd use the same pipeline construction incorporated in Airflow and set up a cron schedule, 
+along with an SLA that alerts when the pipeline exceeded it's intended runtime and the data isn't available 
+at the required time (i.e. 7am). This then allows the data engineer working on the pipeline to revisit not only scheduling 
+( i.e. when the pipeline is started) but also the processing. Further, during development the engineer is supposed to gauge 
+how long the pipeline runs, and schedule the start time early enough to ensure in-time delivery of the end result. As 
+the data grows and the pipeline becomes slower, tha SLA will alert the engineer and amendments can be made. 
+
+In the case of 2, it's a simple case of scheduling the pipeline DAG in Airflow using the schedule interval functionality 
+provided as part of the system. 
 
 ### If the database needed to be accessed by 100+ people.
-This is no problem for AWS S3 and the solution lends itself perfectly to this scenario.
- 
+As mentioned under `Why did you choose the tools and technologies you chose?`, S3 was chosen specifically because it
+handles user access extremely well. Security is no longer a concern as access can be controlled on a data object level.
+Further, as of 2018, AWS S3 has increase performance capabilities to allow for at least 3500 requests per second to add 
+data to storage, and 5500 requests to retrieve data from storage. At an object level, this means even if 100+ users tries 
+to access the same data object there won't be limitations imposed, unless the users are doing something they shouldn't 
+(redundant calls to the same data objects at an enormous rate). These performance improvements were rolled out across 
+all of S3's storage types. 
